@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      width: 300px;
+      padding: 15px;
+      font-family: Arial, sans-serif;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    
+    .header h1 {
+      margin: 0;
+      color: #007acc;
+      font-size: 16px;
+    }
+    
+    .button {
+      width: 100%;
+      padding: 10px;
+      background: #007acc;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+    
+    .button:hover {
+      background: #005a9e;
+    }
+    
+    .status {
+      padding: 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      text-align: center;
+    }
+    
+    .status.connected {
+      background: #e8f5e8;
+      color: #2e7d32;
+    }
+    
+    .status.disconnected {
+      background: #ffebee;
+      color: #c62828;
+    }
+    
+    .instructions {
+      font-size: 12px;
+      color: #666;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🎯 Cursor Visual Editor</h1>
+  </div>
+  
+  <button id="toggleSelection" class="button">Activar Selección Visual</button>
+  
+  <div id="status" class="status disconnected">
+    Cursor: No conectado
+  </div>
+  
+  <div class="instructions">
+    <p><strong>Instrucciones:</strong></p>
+    <ol>
+      <li>Asegúrate de que Cursor esté ejecutándose</li>
+      <li>Haz clic en "Activar Selección Visual"</li>
+      <li>Haz clic en cualquier elemento de la página</li>
+      <li>El elemento se enviará automáticamente a Cursor</li>
+    </ol>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

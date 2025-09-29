@@ -1,0 +1,40 @@
+/* Estilos para el Cursor Visual Editor */
+.cursor-element-highlight {
+  outline: 3px solid #007acc !important;
+  background-color: rgba(0, 122, 204, 0.1) !important;
+  box-shadow: 0 0 0 1px white, 0 0 0 2px #007acc !important;
+  transition: all 0.2s ease !important;
+}
+
+.cursor-element-highlight:hover {
+  outline: 3px solid #ff5722 !important;
+  background-color: rgba(255, 87, 34, 0.15) !important;
+  box-shadow: 0 0 0 1px white, 0 0 0 2px #ff5722 !important;
+  cursor: crosshair !important;
+}
+
+/* Estilos para el modo selección */
+#cursor-selection-overlay {
+  pointer-events: none !important;
+}
+
+/* Estilos para la notificación */
+#cursor-notification {
+  animation: cursor-notification-fade 0.3s ease;
+}
+
+@keyframes cursor-notification-fade {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Prevenir interferencias con elementos existentes */
+.cursor-visual-editor-active * {
+  pointer-events: auto !important;
+}
