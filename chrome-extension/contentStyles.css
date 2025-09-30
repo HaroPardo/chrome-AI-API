@@ -10,15 +10,36 @@
   outline: 3px solid #ff5722 !important;
   background-color: rgba(255, 87, 34, 0.15) !important;
   box-shadow: 0 0 0 1px white, 0 0 0 2px #ff5722 !important;
-  cursor: crosshair !important;
 }
 
-/* Estilos para el modo selección */
-#cursor-selection-overlay {
-  pointer-events: none !important;
+/* Rectángulo de selección */
+.cursor-selection-rect {
+  animation: cursor-selection-pulse 1s infinite;
 }
 
-/* Estilos para la notificación */
+@keyframes cursor-selection-pulse {
+  0% { border-color: #007acc; }
+  50% { border-color: #ff5722; }
+  100% { border-color: #007acc; }
+}
+
+/* Diálogo de selección */
+.cursor-selection-dialog {
+  animation: cursor-dialog-fade 0.3s ease;
+}
+
+@keyframes cursor-dialog-fade {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* Notificación */
 #cursor-notification {
   animation: cursor-notification-fade 0.3s ease;
 }
@@ -34,7 +55,7 @@
   }
 }
 
-/* Prevenir interferencias con elementos existentes */
+/* Prevenir interferencias */
 .cursor-visual-editor-active * {
   pointer-events: auto !important;
 }

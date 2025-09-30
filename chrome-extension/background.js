@@ -1,9 +1,10 @@
 // Service Worker para la extensión de Chrome
 console.log('Cursor Visual Editor - Service Worker cargado');
 
-// Manejar la instalación
+// Estado por defecto
 chrome.runtime.onInstalled.addListener(() => {
   console.log('Cursor Visual Editor instalado');
+  chrome.storage.local.set({ isEnabled: false });
 });
 
 // Manejar mensajes desde content script

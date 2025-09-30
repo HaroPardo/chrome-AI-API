@@ -2,17 +2,26 @@
   "manifest_version": 3,
   "name": "Cursor Visual Editor",
   "version": "1.0",
-  "description": "Visual editor for Cursor - click any element to edit",
-  "permissions": ["activeTab", "scripting"],
-  "host_permissions": ["http://localhost/*", "https://localhost/*"],
+  "description": "Visual editor for Cursor - select and edit any element",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "host_permissions": ["<all_urls>"],
   "background": {
     "service_worker": "background.js"
   },
-   "content_scripts": [
+  "content_scripts": [
     {
-      "matches": ["http://localhost/*", "http://127.0.0.1/*", "https://localhost/*"],
+      "matches": ["<all_urls>"],
       "js": ["dist/contentScript.js"],
-      "css": ["contentStyles.css"]
+      "css": ["contentStyles.css"],
+      "run_at": "document_end"
     }
-  ]
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Cursor Visual Editor"
+  },
+  "web_accessible_resources": [{
+    "resources": ["injected.js"],
+    "matches": ["<all_urls>"]
+  }]
 }

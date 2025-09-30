@@ -4,43 +4,71 @@
   <meta charset="utf-8">
   <style>
     body {
-      width: 300px;
-      padding: 15px;
+      width: 320px;
+      padding: 0;
+      margin: 0;
       font-family: Arial, sans-serif;
     }
     
     .header {
+      background: #007acc;
+      color: white;
+      padding: 15px;
       text-align: center;
-      margin-bottom: 15px;
     }
     
     .header h1 {
       margin: 0;
-      color: #007acc;
       font-size: 16px;
     }
     
-    .button {
-      width: 100%;
-      padding: 10px;
-      background: #007acc;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 14px;
-      margin-bottom: 10px;
+    .content {
+      padding: 15px;
     }
     
-    .button:hover {
-      background: #005a9e;
+    .toggle-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .toggle-button {
+      width: 50px;
+      height: 26px;
+      background: #ccc;
+      border-radius: 13px;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    
+    .toggle-button.active {
+      background: #007acc;
+    }
+    
+    .toggle-button::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: white;
+      border-radius: 50%;
+      top: 3px;
+      left: 3px;
+      transition: transform 0.3s;
+    }
+    
+    .toggle-button.active::after {
+      transform: translateX(24px);
     }
     
     .status {
-      padding: 8px;
+      padding: 10px;
       border-radius: 4px;
       font-size: 12px;
       text-align: center;
+      margin-bottom: 15px;
     }
     
     .status.connected {
@@ -56,7 +84,22 @@
     .instructions {
       font-size: 12px;
       color: #666;
-      margin-top: 10px;
+      border-top: 1px solid #eee;
+      padding-top: 15px;
+    }
+    
+    .instructions h3 {
+      margin: 0 0 8px 0;
+      color: #333;
+    }
+    
+    .instructions ol {
+      margin: 0;
+      padding-left: 15px;
+    }
+    
+    .instructions li {
+      margin-bottom: 6px;
     }
   </style>
 </head>
@@ -65,20 +108,26 @@
     <h1>🎯 Cursor Visual Editor</h1>
   </div>
   
-  <button id="toggleSelection" class="button">Activar Selección Visual</button>
-  
-  <div id="status" class="status disconnected">
-    Cursor: No conectado
-  </div>
-  
-  <div class="instructions">
-    <p><strong>Instrucciones:</strong></p>
-    <ol>
-      <li>Asegúrate de que Cursor esté ejecutándose</li>
-      <li>Haz clic en "Activar Selección Visual"</li>
-      <li>Haz clic en cualquier elemento de la página</li>
-      <li>El elemento se enviará automáticamente a Cursor</li>
-    </ol>
+  <div class="content">
+    <div class="toggle-section">
+      <span><strong>Modo Selección</strong></span>
+      <div id="toggleButton" class="toggle-button"></div>
+    </div>
+    
+    <div id="status" class="status disconnected">
+      Cursor: No conectado
+    </div>
+    
+    <div class="instructions">
+      <h3>📖 Instrucciones:</h3>
+      <ol>
+        <li>Activa el "Modo Selección"</li>
+        <li>Arrastra el ratón sobre cualquier elemento</li>
+        <li>Describe los cambios que quieres hacer</li>
+        <li>Elige enviar a Cursor o editar directamente</li>
+      </ol>
+      <p><strong>💡 Tip:</strong> Funciona en YouTube, Twitter, y cualquier sitio web</p>
+    </div>
   </div>
 
   <script src="popup.js"></script>
