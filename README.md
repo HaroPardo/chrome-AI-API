@@ -2,6 +2,8 @@
 
 A Chrome extension that turns any web page into a visual editor. Select elements by clicking and dragging, describe the changes you want to make, and the AI will modify the HTML automatically.
 
+Video: https://youtu.be/m6SopePV5l0
+
 ## ✨ Features
 
 - **Visual Selection**: Drag the mouse over any element to select it
