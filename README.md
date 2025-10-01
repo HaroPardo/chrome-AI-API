@@ -79,15 +79,11 @@ Describir cambios
 
 Aparecerá un diálogo flotante
 
-Describe los cambios que quieres hacer (ej: "Cambia el texto a rojo", "Aumenta el tamaño de fuente")
+Describe los cambios que quieres hacer
 
-Ejemplos:
+Ejemplo:
 
 "Cambia el texto por 'Hola Mundo'"
-
-"Haz el logo más grande"
-
-"Cambia el color de fondo a azul"
 
 Aplicar cambios
 
