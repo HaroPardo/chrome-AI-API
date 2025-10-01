@@ -81,16 +81,30 @@
       color: #c62828;
     }
     
+    .api-config {
+      border-top: 1px solid #eee;
+      padding-top: 15px;
+      margin-top: 15px;
+    }
+    
+    .api-config h3 {
+      margin: 0 0 10px 0;
+      font-size: 14px;
+      color: #333;
+    }
+    
     .instructions {
       font-size: 12px;
       color: #666;
       border-top: 1px solid #eee;
       padding-top: 15px;
+      margin-top: 15px;
     }
     
     .instructions h3 {
       margin: 0 0 8px 0;
       color: #333;
+      font-size: 14px;
     }
     
     .instructions ol {
@@ -100,6 +114,32 @@
     
     .instructions li {
       margin-bottom: 6px;
+    }
+    
+    input, button {
+      width: 100%;
+      padding: 8px;
+      margin: 5px 0;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    
+    button {
+      background: #28a745;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    
+    button:hover {
+      background: #218838;
+    }
+    
+    .api-info {
+      font-size: 11px;
+      color: #666;
+      margin-top: 5px;
     }
   </style>
 </head>
@@ -115,7 +155,14 @@
     </div>
     
     <div id="status" class="status disconnected">
-      Cursor: No conectado
+      Modo selección: DESACTIVADO
+    </div>
+
+    <!-- 🔑 Configuración Gemini -->
+    <div class="api-config">
+      <h3>🔑 Configuración Gemini</h3>
+      <input type="password" id="apiKeyInput" placeholder="AIzaSyCmf08jvrrqTjLok8RISq16MviW7Ud6XyI">
+      <button id="saveApiKey">Guardar API Key</button>
     </div>
     
     <div class="instructions">
@@ -124,9 +171,8 @@
         <li>Activa el "Modo Selección"</li>
         <li>Arrastra el ratón sobre cualquier elemento</li>
         <li>Describe los cambios que quieres hacer</li>
-        <li>Elige enviar a Cursor o editar directamente</li>
+        <li>Elige enviar a OpenAI o editar directamente</li>
       </ol>
-      <p><strong>💡 Tip:</strong> Funciona en YouTube, Twitter, y cualquier sitio web</p>
     </div>
   </div>
 

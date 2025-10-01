@@ -25,7 +25,7 @@ interface ElementData {
     react: any;
     url: string;
     timestamp: string;
-    userPrompt?: string; // Propiedad opcional añadida
+    userPrompt?: string;
   };
 }
 
@@ -105,24 +105,23 @@ function disableGlobalSelection(): void {
   showNotification('🔴 Modo selección desactivado');
 }
 
-// Prevenir arrastrado - CORREGIDO
+// Prevenir arrastrado
 function preventDrag(e: Event): void {
   e.preventDefault();
-  // Eliminado: return false;
 }
 
-// Manejar inicio de arrastre - CORREGIDO
+// Manejar inicio de arrastre
 function handleMouseDown(e: MouseEvent): void {
   if (e.button !== 0 || e.ctrlKey || e.shiftKey || e.altKey || e.metaKey) {
     return;
   }
 
-  const target = e.target as HTMLElement; // Cambiado a HTMLElement
+  const target = e.target as HTMLElement;
   if (target.tagName === 'INPUT' || 
       target.tagName === 'TEXTAREA' || 
       target.tagName === 'BUTTON' ||
       target.tagName === 'SELECT' ||
-      target.contentEditable === 'true') { // CORREGIDO: forma correcta de verificar contentEditable
+      target.contentEditable === 'true') {
     return;
   }
 
@@ -262,8 +261,19 @@ function cleanupSelection(): void {
   selectedElements = [];
 }
 
-// Mostrar diálogo de selección - CORREGIDO
+// Mostrar diálogo de selección - VERSIÓN CORREGIDA
 function showSelectionDialog(elementData: ElementData, element: Element): void {
+  const overlay = document.createElement('div');
+  overlay.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 10000;
+  `;
+  
   const dialog = document.createElement('div');
   dialog.className = 'cursor-selection-dialog';
   dialog.style.cssText = `
@@ -291,23 +301,27 @@ function showSelectionDialog(elementData: ElementData, element: Element): void {
               style="width: 100%; height: 80px; margin-bottom: 15px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;"></textarea>
     <div style="display: flex; gap: 10px; justify-content: flex-end;">
       <button id="cursor-cancel" style="padding: 8px 16px; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer;">Cancelar</button>
-      <button id="cursor-send" style="padding: 8px 16px; background: #007acc; color: white; border: none; border-radius: 4px; cursor: pointer;">Enviar a Cursor</button>
+      <button id="cursor-send" style="padding: 8px 16px; background: #007acc; color: white; border: none; border-radius: 4px; cursor: pointer;">Enviar a OpenAI</button>
       <button id="cursor-edit" style="padding: 8px 16px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">Editar Directamente</button>
     </div>
   `;
-  
-  document.body.appendChild(dialog);
-  
-  // Event listeners - CORREGIDO
-  document.getElementById('cursor-cancel')?.addEventListener('click', () => {
-    dialog.remove();
+
+  // Función para limpiar SOLO el diálogo
+  const cleanupDialogOnly = () => {
+    if (dialog.parentNode) dialog.parentNode.removeChild(dialog);
+    if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
     cleanupHighlights();
-  });
+  };
+
+  document.body.appendChild(overlay);
+  document.body.appendChild(dialog);
+
+  // Event listeners CORREGIDOS
+  document.getElementById('cursor-cancel')?.addEventListener('click', cleanupDialogOnly);
   
   document.getElementById('cursor-send')?.addEventListener('click', () => {
     const prompt = (document.getElementById('cursor-prompt') as HTMLTextAreaElement).value;
     if (prompt.trim()) {
-      // CORREGIDO: Usar la propiedad opcional userPrompt
       const elementDataWithPrompt: ElementData = {
         ...elementData,
         context: {
@@ -315,10 +329,9 @@ function showSelectionDialog(elementData: ElementData, element: Element): void {
           userPrompt: prompt
         }
       };
-      sendElementToCursor(elementDataWithPrompt);
+      sendToOpenAI(elementDataWithPrompt);
     }
-    dialog.remove();
-    cleanupHighlights();
+    cleanupDialogOnly();
   });
   
   document.getElementById('cursor-edit')?.addEventListener('click', () => {
@@ -326,27 +339,83 @@ function showSelectionDialog(elementData: ElementData, element: Element): void {
     if (prompt.trim()) {
       applyDirectEdit(element, prompt);
     }
-    dialog.remove();
-    cleanupHighlights();
+    cleanupDialogOnly();
   });
-  
-  const overlay = document.createElement('div');
-  overlay.style.cssText = `
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-    z-index: 10000;
-  `;
-  document.body.appendChild(overlay);
-  
-  overlay.addEventListener('click', () => {
-    dialog.remove();
-    overlay.remove();
-    cleanupHighlights();
-  });
+
+  // Cerrar al hacer clic fuera del diálogo
+  overlay.addEventListener('click', cleanupDialogOnly);
+}
+
+// Función para enviar a OpenAI - NUEVA Y CORREGIDA
+async function sendToOpenAI(elementData: ElementData): Promise<void> {
+  try {
+    showNotification('📤 Enviando a OpenAI...');
+    
+    const response = await chrome.runtime.sendMessage({
+      type: 'SEND_TO_AI',
+      data: elementData
+    } as ChromeMessage);
+    
+    if (response.success) {
+      applyAIChanges(elementData, response.result);
+      showNotification('✅ Cambio aplicado desde OpenAI');
+    } else {
+      throw new Error(response.error);
+    }
+  } catch (error: unknown) {
+    console.error('Error con OpenAI:', error);
+    let errorMessage = 'Error desconocido';
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    showNotification('❌ Error: ' + errorMessage);
+  }
+}
+
+// Función para aplicar cambios de OpenAI
+// Improved function to apply AI changes
+function applyAIChanges(elementData: ElementData, newHtml: string): void {
+  try {
+    const originalElement = findElementByHtml(elementData.context.html);
+    
+    if (!originalElement) {
+      console.error('Original element not found in DOM');
+      showNotification('⚠️ Elemento no encontrado - la página puede haber cambiado');
+      return;
+    }
+    
+    if (!newHtml || newHtml.trim() === '') {
+      console.error('Empty HTML received from AI');
+      showNotification('⚠️ Respuesta vacía del servidor AI');
+      return;
+    }
+    
+    // Create temporary container and replace content
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = newHtml.trim();
+    
+    if (tempDiv.firstElementChild) {
+      originalElement.replaceWith(tempDiv.firstElementChild);
+      showNotification('✅ Cambio aplicado correctamente');
+    } else {
+      throw new Error('Invalid HTML structure received');
+    }
+    
+  } catch (error) {
+    console.error('Error applying AI changes:', error);
+    showNotification('❌ Error aplicando el cambio - consulta la consola');
+  }
+}
+
+// Función auxiliar para encontrar elemento por HTML
+function findElementByHtml(html: string): Element | null {
+  const allElements = document.body.getElementsByTagName('*');
+  for (let i = 0; i < allElements.length; i++) {
+    if (allElements[i].outerHTML === html) {
+      return allElements[i];
+    }
+  }
+  return null;
 }
 
 // Aplicar edición directa
@@ -446,27 +515,6 @@ function getReactContext(element: Element): any {
   return null;
 }
 
-// Enviar elemento a Cursor
-async function sendElementToCursor(elementData: ElementData): Promise<void> {
-  try {
-    showNotification('📤 Enviando elemento a Cursor...');
-    
-    const response = await chrome.runtime.sendMessage({
-      type: 'SEND_TO_CURSOR',
-      data: elementData
-    } as ChromeMessage);
-    
-    if (response.success) {
-      showNotification('✅ Elemento enviado a Cursor correctamente');
-    } else {
-      showNotification('❌ Error enviando a Cursor: ' + response.error);
-    }
-  } catch (error) {
-    console.error('Error enviando a Cursor:', error);
-    showNotification('🔌 No se pudo conectar con Cursor - Verifica que el servidor esté ejecutándose');
-  }
-}
-
 // Mostrar notificación
 function showNotification(message: string): void {
   const existingNotification = document.getElementById('cursor-notification');
@@ -505,4 +553,30 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initializeExtension);
 } else {
   initializeExtension();
+}
+
+function saveModificationState(selector: string, modifiedHtml: string) {
+  const modifications = JSON.parse(localStorage.getItem('aiModifications') || '{}');
+  modifications[selector] = modifiedHtml;
+  localStorage.setItem('aiModifications', JSON.stringify(modifications));
+}
+
+// Apply saved modifications on page load
+function applySavedModifications() {
+  if (!window.location.hostname.includes('localhost')) return;
+  
+  const modifications = JSON.parse(localStorage.getItem('aiModifications') || '{}');
+  Object.entries(modifications).forEach(([selector, html]) => {
+    const element = document.querySelector(selector);
+    if (element) {
+      element.outerHTML = html as string;
+    }
+  });
+}
+
+// Call this when your content script loads
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', applySavedModifications);
+} else {
+  applySavedModifications();
 }

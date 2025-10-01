@@ -3,25 +3,34 @@
   "name": "Cursor Visual Editor",
   "version": "1.0",
   "description": "Visual editor for Cursor - select and edit any element",
-  "permissions": ["activeTab", "scripting", "storage"],
-  "host_permissions": ["<all_urls>"],
-  "background": {
-    "service_worker": "background.js"
-  },
+  
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  
+  "host_permissions": [
+    
+        "https://generativelanguage.googleapis.com/*"
+  ],
+  
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
       "js": ["dist/contentScript.js"],
       "css": ["contentStyles.css"],
-      "run_at": "document_end"
+      "run_at": "document_end",
+      "all_frames": true
     }
   ],
+  
+  "background": {
+    "service_worker": "background.js"
+  },
+  
   "action": {
     "default_popup": "popup.html",
     "default_title": "Cursor Visual Editor"
-  },
-  "web_accessible_resources": [{
-    "resources": ["injected.js"],
-    "matches": ["<all_urls>"]
-  }]
+  }
 }
