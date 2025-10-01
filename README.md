@@ -39,7 +39,7 @@ Ingresa tu API key de Google Gemini
 
 Haz clic en "Guardar API Key"
 
-🛠️ Configuración
+# 🛠️ Configuración
 Obtención de API Key
 Ve a Google AI Studio
 
@@ -62,7 +62,7 @@ storage: Para guardar tu API key y preferencias
 
 host_permissions: Para funcionar en todos los sitios web
 
-💡 Cómo usar
+# 💡 Cómo usar
 Activar el modo selección
 
 Haz clic en el icono de la extensión
@@ -95,7 +95,7 @@ Enviar a IA: Usa Gemini para modificar el HTML automáticamente
 
 Editar directamente: Aplica cambios básicos directamente
 
-🏗️ Estructura del proyecto
+# 🏗️ Estructura del proyecto
 text
 chrome-extension/
 ├── manifest.json          # Configuración de la extensión
@@ -106,7 +106,7 @@ chrome-extension/
 ├── popup.js              # Lógica del popup
 ├── contentStyles.css     # Estilos para la interfaz visual
 └── dist/                 # Archivos compilados (TypeScript → JavaScript)
-🔧 Desarrollo
+# 🔧 Desarrollo
 Requisitos de desarrollo
 Node.js y npm
 
@@ -126,7 +126,7 @@ background.js: Maneja las llamadas a la API de Gemini
 
 popup.js: Interfaz de usuario para configurar y activar la extensión
 
-🌐 Compatibilidad
+# 🌐 Compatibilidad
 ✅ Chrome 88+
 
 ✅ Edge 88+
@@ -135,7 +135,7 @@ popup.js: Interfaz de usuario para configurar y activar la extensión
 
 ✅ Otros navegadores basados en Chromium
 
-⚠️ Limitaciones
+# ⚠️ Limitaciones
 Los cambios son locales y se pierden al recargar la página
 
 La API de Gemini tiene límites de uso gratuito
