@@ -1,139 +1,136 @@
-# 🎯 Cursor Visual Editor - Chrome Extension
+# 🎯 Chrome Extension AI Visual Editor
 
-Una extensión de Chrome que convierte cualquier página web en un editor visual. Selecciona elementos haciendo clic y arrastrando, describe los cambios que quieres hacer, y la IA modificará el HTML automáticamente.
+A Chrome extension that turns any web page into a visual editor. Select elements by clicking and dragging, describe the changes you want to make, and the AI will modify the HTML automatically.
 
-## ✨ Características
+## ✨ Features
 
-- **Selección Visual**: Arrastra el ratón sobre cualquier elemento para seleccionarlo
-- **Edición con IA**: Integración con Google Gemini para modificar elementos usando lenguaje natural
-- **Funciona en cualquier sitio**: Compatible con todas las páginas web
-- **Interfaz intuitiva**: Diálogo flotante para describir cambios fácilmente
-- **Modo persistente**: Mantén el modo selección activo para múltiples ediciones
+- **Visual Selection**: Drag the mouse over any element to select it
+- **AI Editing**: Integration with Google Gemini to modify elements using natural language
+- **Works anywhere**: Compatible with all web pages
+- **Intuitive interface**: Floating dialog to easily describe changes
+- **Persistent mode**: Keep selection mode active for multiple edits
 
-## 🚀 Instalación
+## 🚀 Installation
 
-### Prerrequisitos
-- Navegador Chrome o basado en Chromium
-- Cuenta en [Google AI Studio](https://aistudio.google.com/) para obtener una API key
+### Installation steps
 
-### Pasos de instalación
-
-1. **Clona o descarga el proyecto**
+1. **Clone or download the project**
    ```bash
-   git clone https://github.com/tu-usuario/cursor-visual-editor.git
-Configura la extensión en Chrome
+   git clone https://github.com/HaroPardo/chrome-AI-API.git
+Set up the extension in Chrome
 
-Abre chrome://extensions/
+Open chrome://extensions/
 
-Activa "Modo desarrollador" (esquina superior derecha)
+Activate "Developer Mode" (upper right corner)
 
-Haz clic en "Cargar extensión descomprimida"
+Click "Load unzipped extension"
 
-Selecciona la carpeta chrome-extension del proyecto
+Select the project's chrome-extension folder
 
-Configura tu API key de Gemini
+Configure your Gemini API key
 
-Haz clic en el icono de la extensión en la barra de herramientas
+Click the extension icon on the toolbar
 
-Ingresa tu API key de Google Gemini
+Enter your Google Gemini API key
 
-Haz clic en "Guardar API Key"
+Click "Save API Key"
 
-## 🛠️ Configuración
-Obtención de API Key
-Ve a Google AI Studio
+## 🛠️ Configuration
+Getting API Key
+Go to Google AI Studio
 
-Inicia sesión con tu cuenta de Google
+Sign in with your Google account
 
-Haz clic en "Get API Key" o "Crear API Key"
+Click "Get API Key" or "Create API Key"
 
-Copia la clave generada
+Copy the generated key
 
-Pégala en la configuración de la extensión
+Paste it into the extension settings
 
-Permisos requeridos
-La extensión necesita:
+Permits required
+The extension needs:
 
-activeTab: Para acceder a la pestaña actual
+activeTab: To access the current tab
 
-scripting: Para inyectar scripts de contenido
+scripting: To inject content scripts
 
-storage: Para guardar tu API key y preferencias
+storage: To save your API key and preferences
 
-host_permissions: Para funcionar en todos los sitios web
+host_permissions: To work on all websites
 
-## 💡 Cómo usar
-Activar el modo selección
+## 💡 How to use
+Activate selection mode
 
-Haz clic en el icono de la extensión
+Click the extension icon
 
-Activa el "Modo Selección"
+Activate "Selection Mode"
 
-Seleccionar elementos
+Select elements
 
-Arrastra el ratón sobre cualquier elemento de la página
+Drag the mouse over any element on the page
 
-Los elementos se resaltarán en azul cuando estén seleccionados
+Items will be highlighted in blue when selected
 
-Describir cambios
+Describe changes
 
-Aparecerá un diálogo flotante
+A floating dialog will appear
 
-Describe los cambios que quieres hacer
+Describe the changes you want to make
 
-Ejemplo:
+Example:
 
-"Cambia el texto por 'Hola Mundo'"
+"Change the text to 'Hello World'"
 
-Aplicar cambios
+Apply changes
 
-Enviar a IA: Usa Gemini para modificar el HTML automáticamente
+Send to AI: Use Gemini to modify the HTML automatically
 
-Editar directamente: Aplica cambios básicos directamente
+Edit directly: Apply basic changes directly
 
-## 🏗️ Estructura del proyecto
+## 🏗️ Project structure
+
 text
 chrome-extension/
-├── manifest.json          # Configuración de la extensión
-├── background.js          # Service worker y comunicación con API
-├── contentScript.js       # Script que se inyecta en las páginas
-├── contentScript.ts       # Código fuente TypeScript
-├── popup.html            # Interfaz del popup
-├── popup.js              # Lógica del popup
-├── contentStyles.css     # Estilos para la interfaz visual
-└── dist/                 # Archivos compilados (TypeScript → JavaScript)
-## 🔧 Desarrollo
-Requisitos de desarrollo
-Node.js y npm
+├── manifest.json          # Extension settings
+├── background.js          # Service worker and communication with API
+├── contentScript.js       # Script that is injected into the pages
+├── contentScript.ts       # TypeScript source code
+├── popup.html            # Popup interface
+├── popup.js              # Popup logic
+├── contentStyles.css     # Styles for the visual interface
+└── dist/                 # Compiled files (TypeScript → JavaScript)
+## 🔧 Development
+Development requirements
+Node.js and npm
 
-TypeScript (opcional, para desarrollo)
+TypeScript (optional, for development)
 
-Compilar TypeScript
+Compile TypeScript
 bash
 cd chrome-extension
 npm install
 npx tsc
-Estructura de archivos principales
-manifest.json: Configuración de la extensión con permisos y scripts
+Main file structure
+manifest.json: Extension configuration with permissions and scripts
 
-contentScript.ts: Lógica principal de selección visual y modificación de elementos
+contentScript.ts: Main logic for visual selection and element modification
 
-background.js: Maneja las llamadas a la API de Gemini
+background.js: Handles calls to the Gemini API
 
-popup.js: Interfaz de usuario para configurar y activar la extensión
+popup.js: User interface to configure and activate the extension
 
-## 🌐 Compatibilidad
+## 🌐 Compatibility
 ✅ Chrome 88+
 
 ✅ Edge 88+
 
 ✅ Brave 1.20+
 
-✅ Otros navegadores basados en Chromium
+✅ Other Chromium-based browsers
 
-## ⚠️ Limitaciones
-Los cambios son locales y se pierden al recargar la página
+## ⚠️ Limitations
+Changes are local and are lost when the page is reloaded
 
-La API de Gemini tiene límites de uso gratuito
+The Gemini API has free usage limits
 
-Algunos sitios web complejos (React, Vue) pueden requerir ajustes adicionales
+Some complex websites (React, Vue) may require additional adjustments
